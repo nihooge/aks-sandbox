@@ -1,0 +1,6 @@
+# az login
+# az account set --subscription be0b431f-c416-434e-9a06-f3d6efacd86b
+
+rgName='aks-sandbox-rg'
+az group list
+az group delete --resource-group $rgName --no-wait --yes
