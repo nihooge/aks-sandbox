@@ -4,3 +4,7 @@
 rgName='aks-sandbox-rg'
 az group list
 az group delete --resource-group $rgName --no-wait --yes
+az account clear
+
+
+# Need to delete different SP

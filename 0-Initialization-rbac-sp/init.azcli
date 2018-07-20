@@ -1,0 +1,26 @@
+# Create an Azure Kubernetes Service (AKS)
+az login
+az account set --subscription be0b431f-c416-434e-9a06-f3d6efacd86b
+
+rgName='aks-sandbox-rg'
+loc='westeurope'
+az group create --name $rgName --location $loc
+
+acrName='nihsandboxacr'
+az acr create --resource-group $rgName --name $acrName --sku Basic
+
+spAks=$(az ad sp create-for-rbac --skip-assignment)
+spAksAppId=$(echo $spAks | jq -r .appId)
+spAksPwd=$(echo $spAks | jq -r .password)
+
+acrId=$(az acr show --name $acrName  --resource-group $rgName --query "id" --output tsv)
+az role assignment create --assignee $spAksAppId --role Reader --scope $acrId
+
+aksName='nihsandboxaks'
+az aks create --resource-group $rgName --name $aksName --node-count 1 --generate-ssh-keys --no-wait --location $loc --service-principal $spAksAppId --client-secret $spAksPwd
+
+# az aks get-versions --location $loc
+# az aks list --query "[?provisioningState!='Succeeded']"
+# az aks show --name $aksName -g $rgName --query provisioningState
+# az aks get-credentials --name $aksName --resource-group $rgName
+# kubectl get nodes
