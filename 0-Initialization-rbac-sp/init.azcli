@@ -1,4 +1,4 @@
-# Create an Azure Kubernetes Service (AKS)
+# Create an Azure Kubernetes Service (AKS) with RBAC Enabled 
 az login
 az account set --subscription be0b431f-c416-434e-9a06-f3d6efacd86b
 
@@ -19,8 +19,21 @@ az role assignment create --assignee $spAksAppId --role Reader --scope $acrId
 aksName='nihsandboxaks'
 az aks create --resource-group $rgName --name $aksName --node-count 1 --generate-ssh-keys --no-wait --location $loc --service-principal $spAksAppId --client-secret $spAksPwd
 
+kubectl create -f dashboard-admin.yaml
+
+# https://pascalnaber.wordpress.com/2018/06/17/access-dashboard-on-aks-with-rbac-enabled/
+# kubectl create serviceaccount dashboard -n default
+# kubectl create clusterrolebinding dashboard-admin -n default --clusterrole=cluster-admin --serviceaccount=default:dashboard
+# kubectl get secret $(kubectl get serviceaccount dashboard -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode
+# kubectl proxy
+
 # az aks get-versions --location $loc
 # az aks list --query "[?provisioningState!='Succeeded']"
 # az aks show --name $aksName -g $rgName --query provisioningState
 # az aks get-credentials --name $aksName --resource-group $rgName
+
+
 # kubectl get nodes
+
+# az ad app list --query "[?displayName=='$aksName'].{Name:displayName,Id:appId}" --output json
+# az ad app delete --id <appId>
