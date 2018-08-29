@@ -1,0 +1,5 @@
+az login
+az account set --subscription be0b431f-c416-434e-9a06-f3d6efacd86b
+spAks=$(az ad sp create-for-rbac --skip-assignment)
+
+RX/aROzzU2t8NgnuFzYxLGDPgF4RlGgNfLK30G9XMD8=

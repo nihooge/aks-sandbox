@@ -1,0 +1,6 @@
+az login
+az account set --subscription be0b431f-c416-434e-9a06-f3d6efacd86b
+az group create --name nihAksAadClusterRg --location westeurope
+
+az aks create --resource-group nihAksAadClusterRg --name nihAksAadCluster --generate-ssh-keys --enable-rbac --aad-server-app-id 7f0224d2-01c7-4e0f-9ce5-dde003c27df8 --aad-server-app-secret QZSPRWDcc3e36rC7moTZwIFVkQK+/OiWLZcDxIDCFEQ= --aad-client-app-id 4227e418-eba0-41db-a565-7ba714b7fd68 --aad-tenant-id e93dda23-287d-4995-a362-6deefe7cd0c6 --verbose
+az aks get-credentials --resource-group nihAksAadClusterRg --name nihAksAadCluster --admin 
